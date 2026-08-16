@@ -2,42 +2,42 @@
  * TaxClarity - Offline Service Worker (Network-First Strategy for Instant Live Updates)
  */
 
-const CACHE_NAME = 'taxclarity-v4.0.0';
+const CACHE_NAME = 'taxclarity-v4.1.0';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
-  './css/variables.css?v=4.0',
-  './css/components.css?v=4.0',
-  './css/styles.css?v=4.0',
-  './css/print.css?v=4.0',
-  './js/constants.js?v=4.0',
-  './js/utils/formatters.js?v=4.0',
-  './js/utils/urlSerializer.js?v=4.0',
-  './js/state/store.js?v=4.0',
-  './js/engine/section87a.js?v=4.0',
-  './js/engine/hraCalculator.js?v=4.0',
-  './js/engine/deductionsCalculator.js?v=4.0',
-  './js/engine/surchargeCalculator.js?v=4.0',
-  './js/engine/oldRegimeCalculator.js?v=4.0',
-  './js/engine/newRegimeCalculator.js?v=4.0',
-  './js/engine/taxEngine.js?v=4.0',
-  './js/components/themeManager.js?v=4.0',
-  './js/components/wizardStepper.js?v=4.0',
-  './js/components/tooltip.js?v=4.0',
-  './js/components/hraModal.js?v=4.0',
-  './js/components/stepProfile.js?v=4.0',
-  './js/components/stepIncome.js?v=4.0',
-  './js/components/stepDeductions.js?v=4.0',
-  './js/components/verdictBanner.js?v=4.0',
-  './js/components/comparisonTable.js?v=4.0',
-  './js/components/charts.js?v=4.0',
-  './js/components/slabAccordion.js?v=4.0',
-  './js/components/optimizerSlider.js?v=4.0',
-  './js/components/scenarioManager.js?v=4.0',
-  './js/components/stepResults.js?v=4.0',
-  './js/components/quickView.js?v=4.0',
-  './js/components/resetModal.js?v=4.0'
+  './css/variables.css?v=4.1',
+  './css/components.css?v=4.1',
+  './css/styles.css?v=4.1',
+  './css/print.css?v=4.1',
+  './js/constants.js?v=4.1',
+  './js/utils/formatters.js?v=4.1',
+  './js/utils/urlSerializer.js?v=4.1',
+  './js/state/store.js?v=4.1',
+  './js/engine/section87a.js?v=4.1',
+  './js/engine/hraCalculator.js?v=4.1',
+  './js/engine/deductionsCalculator.js?v=4.1',
+  './js/engine/surchargeCalculator.js?v=4.1',
+  './js/engine/oldRegimeCalculator.js?v=4.1',
+  './js/engine/newRegimeCalculator.js?v=4.1',
+  './js/engine/taxEngine.js?v=4.1',
+  './js/components/themeManager.js?v=4.1',
+  './js/components/wizardStepper.js?v=4.1',
+  './js/components/tooltip.js?v=4.1',
+  './js/components/hraModal.js?v=4.1',
+  './js/components/stepProfile.js?v=4.1',
+  './js/components/stepIncome.js?v=4.1',
+  './js/components/stepDeductions.js?v=4.1',
+  './js/components/verdictBanner.js?v=4.1',
+  './js/components/comparisonTable.js?v=4.1',
+  './js/components/charts.js?v=4.1',
+  './js/components/slabAccordion.js?v=4.1',
+  './js/components/optimizerSlider.js?v=4.1',
+  './js/components/scenarioManager.js?v=4.1',
+  './js/components/stepResults.js?v=4.1',
+  './js/components/quickView.js?v=4.1',
+  './js/components/resetModal.js?v=4.1'
 ];
 
 self.addEventListener('install', (event) => {
@@ -61,7 +61,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Network-first fetch strategy
+// Network-first fetch strategy with safe fallbacks
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
@@ -75,7 +75,14 @@ self.addEventListener('fetch', (event) => {
       }
       return networkResponse;
     }).catch(() => {
-      return caches.match(event.request).then((cached) => cached || caches.match('./index.html'));
+      return caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        // Only return index.html for navigation / HTML document requests
+        if (event.request.mode === 'navigate' || (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html'))) {
+          return caches.match('./index.html');
+        }
+        return new Response('Not Found', { status: 404, statusText: 'Not Found' });
+      });
     })
   );
 });

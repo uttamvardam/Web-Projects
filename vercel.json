@@ -1,0 +1,25 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/Tax-Clarity/index.html"
+    },
+    {
+      "source": "/Tax-Clarity",
+      "destination": "/Tax-Clarity/index.html"
+    },
+    {
+      "source": "/Tax-Clarity/",
+      "destination": "/Tax-Clarity/index.html"
+    },
+    {
+      "source": "/Tax-Clarity/(.*)",
+      "destination": "/Tax-Clarity/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/Tax-Clarity/$1"
+    }
+  ]
+}
