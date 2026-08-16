@@ -37,7 +37,8 @@ const ASSETS_TO_CACHE = [
   './js/components/scenarioManager.js?v=4.2',
   './js/components/stepResults.js?v=4.2',
   './js/components/quickView.js?v=4.2',
-  './js/components/resetModal.js?v=4.2'
+  './js/components/resetModal.js?v=4.2',
+  './assets/images/tax_discussion.jpg'
 ];
 
 self.addEventListener('install', (event) => {

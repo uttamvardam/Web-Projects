@@ -238,13 +238,18 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
-.hero-illustration-svg {
+.hero-illustration-img {
   width: 100%;
-  max-width: 460px;
+  max-width: 580px;
   height: auto;
-  opacity: 0.95;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px rgba(59, 18, 98, 0.08);
+  border: 1px solid var(--border-subtle);
+  background: #FFFFFF;
+  display: block;
 }
 
 /* ================= SECTION SEPARATOR / DEEP PURPLE BAND ================= */
