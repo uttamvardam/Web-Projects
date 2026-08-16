@@ -174,13 +174,7 @@ button {
 
 /* ================= HERO / TOP VISUAL AREA ================= */
 .hero-visual-section {
-  height: calc(100vh - 65px - 12px);
-  min-height: 480px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 12px 0 16px 0;
+  padding: 44px 0 36px 0;
   text-align: center;
   position: relative;
   background: radial-gradient(circle at 50% 15%, rgba(124, 58, 237, 0.06) 0%, transparent 65%);
@@ -195,12 +189,12 @@ button {
 }
 
 .hero-main-title {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 900;
   line-height: 1.15;
   color: var(--color-primary);
   letter-spacing: -0.03em;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 [data-theme="dark"] .hero-main-title {
@@ -208,23 +202,23 @@ button {
 }
 
 .hero-subtitle {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--text-muted);
   font-weight: 400;
-  max-width: 560px;
-  line-height: 1.5;
-  margin-bottom: 14px;
+  max-width: 580px;
+  line-height: 1.55;
+  margin-bottom: 18px;
 }
 
 .hero-cta-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 22px;
+  padding: 10px 24px;
   background: var(--color-primary);
   color: #FFFFFF;
   border-radius: var(--radius-sm);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -241,7 +235,7 @@ button {
 }
 
 .hero-illustration-wrapper {
-  margin-top: 16px;
+  margin-top: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -250,23 +244,25 @@ button {
 
 .hero-illustration-img {
   width: 100%;
-  max-width: 380px;
+  max-width: 420px;
   height: auto;
   border-radius: var(--radius-md);
-  box-shadow: 0 4px 16px rgba(59, 18, 98, 0.07);
+  box-shadow: 0 6px 20px rgba(59, 18, 98, 0.07);
   border: 1px solid var(--border-subtle);
   background: #FFFFFF;
   display: block;
 }
 
-/* ================= SECTION DIVIDER / ACCENT BAR ================= */
-.section-divider-bar {
+/* ================= FULL-WIDTH DEEP PURPLE SEPARATOR BAND ================= */
+.purple-separator-band {
   width: 100%;
-  height: 12px;
-  background: linear-gradient(90deg, #2A0845 0%, #3B1262 50%, #2A0845 100%);
-  box-shadow: 0 3px 12px rgba(42, 8, 69, 0.35);
+  height: 90px;
+  background: var(--bg-ribbon); /* #24083B / deep royal purple */
+  border-top: 1px dashed rgba(233, 213, 255, 0.28);
+  border-bottom: 1px dashed rgba(233, 213, 255, 0.28);
+  margin-bottom: 36px;
   position: relative;
-  z-index: 10;
+  box-shadow: inset 0 3px 12px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(36, 8, 59, 0.2);
 }
 
 /* ================= MAIN 2-COLUMN DASHBOARD ================= */
