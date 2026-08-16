@@ -50,29 +50,6 @@
           <span class="long-text">Zero Server Calls • 100% Private</span>
         </div>
 
-        <!-- Scenarios Button -->
-        <button id="headerScenariosBtn" class="btn btn-secondary btn-sm" title="View Saved Scenarios" aria-label="Open Saved Scenarios">
-          <span>📁</span>
-          <span>Scenarios</span>
-        </button>
-
-        <!-- Quick Mode Toggle -->
-        <div class="pill-switcher" title="Toggle between Step-by-Step Wizard and Single Page View">
-          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 2px 8px; font-size: 12px; font-weight: 600; color: var(--text-secondary);">
-            <input type="checkbox" id="viewModeToggle" style="cursor: pointer;" aria-label="Toggle Single Page Expert Mode">
-            <span>Single Page</span>
-          </label>
-        </div>
-
-        <!-- Reset All Button -->
-        <button id="headerResetBtn" class="btn btn-secondary btn-sm btn-reset-header" title="Reset All Data to Defaults" aria-label="Reset All Calculator Inputs" onclick="if(window.TaxClarity && window.TaxClarity.ResetModal){window.TaxClarity.ResetModal.openResetModal();}else if(window.TaxClarity && window.TaxClarity.Store){window.TaxClarity.Store.resetState();}">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-            <path d="M3 3v5h5"/>
-          </svg>
-          <span>Reset All</span>
-        </button>
-
         <!-- Theme Toggle Button -->
         <button id="themeToggleBtn" class="btn btn-secondary btn-icon" aria-label="Toggle Dark and Light Theme" title="Toggle Theme">
           ☀️
@@ -127,6 +104,39 @@
       <!-- ================= LEFT COLUMN: INPUT WIZARD ================= -->
       <div class="dashboard-left-col">
         
+        <!-- Calculator Utility Toolbar -->
+        <div class="calculator-utility-toolbar">
+          <div class="calculator-toolbar-left">
+            <span class="toolbar-tag-icon">⚡</span>
+            <span>Tax Optimization Hub</span>
+          </div>
+
+          <div class="calculator-toolbar-right">
+            <!-- Scenarios Button -->
+            <button id="headerScenariosBtn" class="btn btn-secondary btn-sm" title="View Saved Scenarios" aria-label="Open Saved Scenarios">
+              <span>📁</span>
+              <span>Saved Scenarios</span>
+            </button>
+
+            <!-- Quick Single Page Mode Toggle -->
+            <div class="pill-switcher" title="Toggle between Step-by-Step Wizard and Single Page View">
+              <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 2px 8px; font-size: 11.5px; font-weight: 700; color: var(--text-secondary);">
+                <input type="checkbox" id="viewModeToggle" style="cursor: pointer; accent-color: var(--color-primary);" aria-label="Toggle Single Page Expert Mode">
+                <span>Single Page Mode</span>
+              </label>
+            </div>
+
+            <!-- Reset All Button -->
+            <button id="headerResetBtn" class="btn btn-secondary btn-sm btn-reset-header" title="Reset All Data to Defaults" aria-label="Reset All Calculator Inputs" onclick="if(window.TaxClarity && window.TaxClarity.ResetModal){window.TaxClarity.ResetModal.openResetModal();}else if(window.TaxClarity && window.TaxClarity.Store){window.TaxClarity.Store.resetState();}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+              </svg>
+              <span>Reset All</span>
+            </button>
+          </div>
+        </div>
+
         <!-- 4-Step Stepper Progress Bar -->
         <nav class="wizard-stepper" aria-label="Calculator Steps">
           <div class="stepper-track-bg"></div>
