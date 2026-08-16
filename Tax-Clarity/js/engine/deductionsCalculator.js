@@ -30,10 +30,35 @@
     const employmentType = profile.employmentType || EMPLOYMENT_TYPES.SALARIED;
     const isSalariedOrPensioner = (employmentType === EMPLOYMENT_TYPES.SALARIED || employmentType === EMPLOYMENT_TYPES.PENSIONER);
 
-    // 1. Standard Deduction
+    // 1. Standard Deduction (Section 16(ia) / Section 115BAC)
     const fyConfig = Constants.FINANCIAL_YEARS[financialYear] || Constants.FINANCIAL_YEARS[Constants.DEFAULT_FY];
-    const stdDedOld = isSalariedOrPensioner ? fyConfig.oldRegimeStdDed : 0;
-    const stdDedNew = isSalariedOrPensioner ? fyConfig.newRegimeStdDed : 0;
+    const grossSalary = Math.max(0, Number(income.grossSalary) || 0);
+    const basicSalary = Math.max(0, Number(income.basicSalary) || 0);
+    const hraReceived = Math.max(0, Number(income.hraReceived) || 0);
+    const specialAllowance = Math.max(0, Number(income.specialAllowance) || 0);
+    const otherAllowances = Math.max(0, Number(income.otherAllowances) || Number(income.bonus) || 0);
+    const familyPension = Math.max(0, Number(income.familyPension) || 0);
+
+    const salaryIncome = (income.salaryMode === 'detailed')
+      ? (basicSalary + hraReceived + specialAllowance + otherAllowances)
+      : grossSalary;
+
+    let stdDedOld = 0;
+    let stdDedNew = 0;
+
+    if (isSalariedOrPensioner) {
+      const maxOld = fyConfig.oldRegimeStdDed;
+      const maxNew = fyConfig.newRegimeStdDed;
+      const eligibleSalary = (salaryIncome > 0) ? salaryIncome : (familyPension > 0 ? familyPension : ((income.grossSalary === undefined && !income.businessIncome && !income.rentalIncome) ? Infinity : 0));
+
+      if (eligibleSalary === Infinity || (salaryIncome === 0 && familyPension === 0 && !income.businessIncome && !income.rentalIncome && !income.capitalGains)) {
+        stdDedOld = maxOld;
+        stdDedNew = maxNew;
+      } else {
+        stdDedOld = Math.min(maxOld, eligibleSalary);
+        stdDedNew = Math.min(maxNew, eligibleSalary);
+      }
+    }
 
     // 2. Section 80C
     const raw80C = Math.max(0, Number(deductions.sec80C) || 0) +
@@ -53,7 +78,6 @@
     const eligible80CCD1B = Math.min(raw80CCD1B, DEDUCTION_LIMITS.SEC_80CCD1B_MAX);
 
     // 4. Section 80CCD(2) - Employer NPS Contribution (Allowed in BOTH Old and New Regimes)
-    const basicSalary = Math.max(0, Number(income.basicSalary) || 0);
     const dearnessAllowance = Math.max(0, Number(income.dearnessAllowance) || 0);
     const salaryForNps = basicSalary + dearnessAllowance;
     const raw80CCD2 = Math.max(0, Number(deductions.sec80CCD2) || 0);
@@ -107,7 +131,6 @@
     const otherDeductions = Math.max(0, Number(deductions.otherDeductions) || 0);
 
     // 11. Family Pension Deduction (Section 57(iia))
-    const familyPension = Math.max(0, Number(income.familyPension) || 0);
     const familyPensionDedNew = familyPension > 0 ? Math.min(25000, Math.round(familyPension / 3)) : 0;
     const familyPensionDedOld = familyPension > 0 ? Math.min(15000, Math.round(familyPension / 3)) : 0;
 

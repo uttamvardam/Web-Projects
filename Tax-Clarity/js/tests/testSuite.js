@@ -251,6 +251,105 @@
   })();
 
   // ==========================================
+  // STANDARD DEDUCTION & EMPLOYMENT TYPE TEST SUITE
+  // ==========================================
+
+  // --- Canonical User Case: Salaried Gross ₹12,85,000, Below 60, No Other Deductions ---
+  (function testSalariedCanonical1285k() {
+    const comparison = TaxEngine.compareRegimes({
+      income: { grossSalary: 1285000 },
+      deductions: {},
+      profile: { employmentType: 'salaried', ageCategory: 'general', isResident: true },
+      financialYear: '2025-26'
+    });
+
+    const oldR = comparison.oldRegime;
+    const newR = comparison.newRegime;
+
+    // Old Regime Verifications
+    assertEqual(oldR.grossTotalIncome, 1285000, 'Salaried 12.85L: Old Gross Total Income is ₹12,85,000');
+    assertEqual(oldR.standardDeduction, 50000, 'Salaried 12.85L: Old Standard Deduction is ₹50,000');
+    assertEqual(oldR.totalDeductions, 50000, 'Salaried 12.85L: Old Total Deductions is ₹50,000');
+    assertEqual(oldR.netTaxableIncome, 1235000, 'Salaried 12.85L: Old Taxable Income is ₹12,35,000');
+    assertEqual(oldR.taxBeforeRebate, 183000, 'Salaried 12.85L: Old Tax Before Rebate is ₹1,83,000');
+    assertEqual(oldR.rebate87A, 0, 'Salaried 12.85L: Old 87A Rebate is ₹0');
+    assertEqual(oldR.taxAfterRebate, 183000, 'Salaried 12.85L: Old Tax After Rebate is ₹1,83,000');
+    assertEqual(oldR.marginalRelief87A, 0, 'Salaried 12.85L: Old Marginal Relief is ₹0');
+    assertEqual(oldR.cess, 7320, 'Salaried 12.85L: Old Cess is ₹7,320');
+    assertEqual(oldR.totalTax, 190320, 'Salaried 12.85L: Old Final Tax is ₹1,90,320');
+
+    // New Regime Verifications
+    assertEqual(newR.grossTotalIncome, 1285000, 'Salaried 12.85L: New Gross Total Income is ₹12,85,000');
+    assertEqual(newR.standardDeduction, 75000, 'Salaried 12.85L: New Standard Deduction is ₹75,000');
+    assertEqual(newR.totalDeductions, 75000, 'Salaried 12.85L: New Total Deductions is ₹75,000');
+    assertEqual(newR.netTaxableIncome, 1210000, 'Salaried 12.85L: New Taxable Income is ₹12,10,000');
+    assertEqual(newR.taxBeforeRebate, 61500, 'Salaried 12.85L: New Tax Before Rebate is ₹61,500');
+    assertEqual(newR.rebate87A, 0, 'Salaried 12.85L: New 87A Rebate is ₹0');
+    assertEqual(newR.marginalRelief87A, 51500, 'Salaried 12.85L: New Marginal Relief is ₹51,500');
+    assertEqual(newR.taxAfterRelief, 10000, 'Salaried 12.85L: New Tax After Relief is ₹10,000');
+    assertEqual(newR.cess, 400, 'Salaried 12.85L: New Cess is ₹400');
+    assertEqual(newR.totalTax, 10400, 'Salaried 12.85L: New Final Tax is ₹10,400');
+
+    // Comparison Savings
+    assertEqual(comparison.recommendedRegime, 'NEW', 'Salaried 12.85L: Recommended Regime is NEW');
+    assertEqual(comparison.annualSavings, 179920, 'Salaried 12.85L: Annual Savings is ₹1,79,920');
+    assertEqual(comparison.monthlySavings, 14993, 'Salaried 12.85L: Monthly Savings is ₹14,993');
+  })();
+
+  // --- Pensioner Test Case ---
+  (function testPensioner() {
+    const comparison = TaxEngine.compareRegimes({
+      income: { familyPension: 800000 },
+      deductions: {},
+      profile: { employmentType: 'pensioner', ageCategory: 'senior', isResident: true },
+      financialYear: '2025-26'
+    });
+    assertEqual(comparison.oldRegime.standardDeduction, 50000, 'Pensioner: Old Standard Deduction is ₹50,000');
+    assertEqual(comparison.newRegime.standardDeduction, 75000, 'Pensioner: New Standard Deduction is ₹75,000');
+  })();
+
+  // --- Self-Employed Test Case (No Standard Deduction) ---
+  (function testSelfEmployed() {
+    const comparison = TaxEngine.compareRegimes({
+      income: { businessIncome: 1285000 },
+      deductions: {},
+      profile: { employmentType: 'self_employed', ageCategory: 'general', isResident: true },
+      financialYear: '2025-26'
+    });
+    assertEqual(comparison.oldRegime.standardDeduction, 0, 'Self-Employed: Old Standard Deduction is ₹0');
+    assertEqual(comparison.newRegime.standardDeduction, 0, 'Self-Employed: New Standard Deduction is ₹0');
+    assertEqual(comparison.oldRegime.netTaxableIncome, 1285000, 'Self-Employed: Old Taxable Income is ₹12,85,000');
+    assertEqual(comparison.newRegime.netTaxableIncome, 1285000, 'Self-Employed: New Taxable Income is ₹12,85,000');
+  })();
+
+  // --- Freelancer Test Case (No Standard Deduction) ---
+  (function testFreelancer() {
+    const comparison = TaxEngine.compareRegimes({
+      income: { businessIncome: 1000000 },
+      deductions: {},
+      profile: { employmentType: 'freelancer', ageCategory: 'general', isResident: true },
+      financialYear: '2025-26'
+    });
+    assertEqual(comparison.oldRegime.standardDeduction, 0, 'Freelancer: Old Standard Deduction is ₹0');
+    assertEqual(comparison.newRegime.standardDeduction, 0, 'Freelancer: New Standard Deduction is ₹0');
+  })();
+
+  // --- Salaried with Additional Deductions (80C, 80D, HRA) ---
+  (function testSalariedWithDeductions() {
+    const comparison = TaxEngine.compareRegimes({
+      income: { grossSalary: 1500000, basicSalary: 700000, hraReceived: 200000 },
+      deductions: { sec80C: 150000, sec80DSelf: 25000, rentPaid: 240000 },
+      profile: { employmentType: 'salaried', ageCategory: 'general', isMetro: true, isResident: true },
+      financialYear: '2025-26'
+    });
+    // Old Total Deductions = Std Ded (50k) + 80C (1.5L) + 80D (25k) + HRA Exemption (1.7L) = 3.95L
+    assertEqual(comparison.oldRegime.standardDeduction, 50000, 'Salaried with Ded: Old Std Ded is ₹50,000');
+    assertEqual(comparison.oldRegime.totalDeductions, 395000, 'Salaried with Ded: Old Total Deductions is ₹3,95,000');
+    assertEqual(comparison.newRegime.standardDeduction, 75000, 'Salaried with Ded: New Std Ded is ₹75,000');
+    assertEqual(comparison.newRegime.totalDeductions, 75000, 'Salaried with Ded: New Total Deductions is ₹75,000');
+  })();
+
+  // ==========================================
   // RESET ALL APPLICATION STATE TEST
   // ==========================================
   (function testResetAllState() {

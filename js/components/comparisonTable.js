@@ -58,86 +58,93 @@
               <td>${formatINR(newRegime.grossTotalIncome)}</td>
             </tr>
 
-            <!-- 2. Total Deductions -->
+            <!-- 2. Standard Deduction -->
             <tr>
-              <td>2. Total Deductions</td>
+              <td>2. Standard Deduction</td>
+              <td>${formatINR(oldRegime.standardDeduction || 0)}</td>
+              <td>${formatINR(newRegime.standardDeduction || 0)}</td>
+            </tr>
+
+            <!-- 3. Total Deductions -->
+            <tr>
+              <td>3. Total Deductions</td>
               <td>${formatINR(oldRegime.totalDeductions)}</td>
               <td>${formatINR(newRegime.totalDeductions)}</td>
             </tr>
 
-            <!-- 3. Taxable Income -->
+            <!-- 4. Taxable Income -->
             <tr>
-              <td>3. Taxable Income</td>
+              <td>4. Taxable Income</td>
               <td>${formatINR(oldRegime.netTaxableIncome)}</td>
               <td>${formatINR(newRegime.netTaxableIncome)}</td>
             </tr>
 
-            <!-- 4. Tax Before Rebate -->
+            <!-- 5. Tax Before Rebate -->
             <tr>
-              <td>4. Tax Before Rebate</td>
+              <td>5. Tax Before Rebate</td>
               <td>${formatINR(oldRegime.taxBeforeRebate)}</td>
               <td>${formatINR(newRegime.taxBeforeRebate)}</td>
             </tr>
 
-            <!-- 5. Section 87A Rebate -->
+            <!-- 6. Section 87A Rebate -->
             <tr>
-              <td>5. Section 87A Rebate</td>
+              <td>6. Section 87A Rebate</td>
               <td style="color: ${oldRegime.rebate87A > 0 ? 'var(--color-emerald)' : 'inherit'};">${oldRegime.rebate87A > 0 ? `- ${formatINR(oldRegime.rebate87A)}` : '₹ 0'}</td>
               <td style="color: ${newRegime.rebate87A > 0 ? 'var(--color-emerald)' : 'inherit'};">${newRegime.rebate87A > 0 ? `- ${formatINR(newRegime.rebate87A)}` : '₹ 0'}</td>
             </tr>
 
-            <!-- 6. Tax After Rebate -->
+            <!-- 7. Tax After Rebate -->
             <tr>
-              <td>6. Tax After Rebate</td>
+              <td>7. Tax After Rebate</td>
               <td>${formatINR(oldRegime.taxAfterRebate)}</td>
               <td>${formatINR(newRegime.taxAfterRebate)}</td>
             </tr>
 
-            <!-- 7. Marginal Relief -->
+            <!-- 8. Marginal Relief -->
             <tr>
-              <td>7. Marginal Relief</td>
+              <td>8. Marginal Relief</td>
               <td style="color: ${oldRegime.marginalRelief87A > 0 ? 'var(--color-emerald)' : 'inherit'};">${oldRegime.marginalRelief87A > 0 ? `- ${formatINR(oldRegime.marginalRelief87A)}` : '₹ 0'}</td>
               <td style="color: ${newRegime.marginalRelief87A > 0 ? 'var(--color-emerald)' : 'inherit'}; font-weight: ${newRegime.marginalRelief87A > 0 ? '700' : 'normal'};">${newRegime.marginalRelief87A > 0 ? `- ${formatINR(newRegime.marginalRelief87A)}` : '₹ 0'}</td>
             </tr>
 
-            <!-- 8. Tax After Relief -->
+            <!-- 9. Tax After Relief -->
             <tr>
-              <td>8. Tax After Relief</td>
+              <td>9. Tax After Relief</td>
               <td>${formatINR(oldRegime.taxAfterRelief)}</td>
               <td>${formatINR(newRegime.taxAfterRelief)}</td>
             </tr>
 
-            <!-- 9. Health & Education Cess (4%) -->
+            <!-- 10. Health & Education Cess (4%) -->
             <tr>
-              <td>9. Health & Education Cess (4%)</td>
+              <td>10. Health & Education Cess (4%)</td>
               <td>${formatINR(oldRegime.cess)}</td>
               <td>${formatINR(newRegime.cess)}</td>
             </tr>
 
-            <!-- 10. Final Tax Payable -->
-            <tr style="background: #F8FAFC; font-weight: 800; font-size: 13.5px;">
-              <td style="color: var(--color-primary); font-weight: 800;">10. Final Tax Payable</td>
+            <!-- 11. Final Tax Payable -->
+            <tr style="background: var(--color-primary-bg); font-weight: 800; font-size: 13.5px;">
+              <td style="color: var(--color-primary); font-weight: 800;">11. Final Tax Payable</td>
               <td style="color: ${isOldWinning ? 'var(--color-emerald-dark)' : (oldRegime.totalTax === 0 ? 'var(--color-emerald-dark)' : 'var(--color-rose)')}; font-weight: 800;">${formatINR(oldRegime.totalTax)}</td>
               <td style="color: ${isNewWinning ? 'var(--color-emerald-dark)' : (newRegime.totalTax === 0 ? 'var(--color-emerald-dark)' : 'var(--color-rose)')}; font-weight: 800;">${formatINR(newRegime.totalTax)}</td>
             </tr>
 
-            <!-- 11. Effective Tax Rate -->
+            <!-- 12. Effective Tax Rate -->
             <tr>
-              <td>11. Effective Tax Rate</td>
+              <td>12. Effective Tax Rate</td>
               <td style="color: var(--text-body); font-weight: 600;">${oldRegime.effectiveTaxRate.toFixed(2)}%</td>
               <td style="color: var(--color-primary); font-weight: 700;">${newRegime.effectiveTaxRate.toFixed(2)}%</td>
             </tr>
 
-            <!-- 12. Annual Tax Savings -->
+            <!-- 13. Annual Tax Savings -->
             <tr>
-              <td>12. Annual Tax Savings</td>
+              <td>13. Annual Tax Savings</td>
               <td>${isOldWinning ? `${formatINR(annualSavings)}` : (isEqual ? '₹ 0' : '—')}</td>
               <td style="color: ${isNewWinning ? 'var(--color-emerald)' : 'inherit'}; font-weight: ${isNewWinning ? '700' : 'normal'};">${isNewWinning ? `${formatINR(annualSavings)}` : (isEqual ? '₹ 0' : '—')}</td>
             </tr>
 
-            <!-- 13. Monthly Tax Savings -->
+            <!-- 14. Monthly Tax Savings -->
             <tr>
-              <td>13. Monthly Tax Savings</td>
+              <td>14. Monthly Tax Savings</td>
               <td>${isOldWinning ? formatINR(monthlySavings) : (isEqual ? '₹ 0' : '—')}</td>
               <td style="color: ${isNewWinning ? 'var(--color-emerald)' : 'inherit'}; font-weight: ${isNewWinning ? '700' : 'normal'};">${isNewWinning ? formatINR(monthlySavings) : (isEqual ? '₹ 0' : '—')}</td>
             </tr>
