@@ -28,6 +28,11 @@
     const fyYear = oldRegime.financialYear || '2025-26';
     const ayYear = fyYear === '2025-26' ? 'AY 2026–27' : 'AY 2025–26';
 
+    const oldStdDed = oldRegime.standardDeduction || 0;
+    const newStdDed = newRegime.standardDeduction || 0;
+    const oldOtherDed = Math.max(0, (oldRegime.totalDeductions || 0) - oldStdDed);
+    const newOtherDed = Math.max(0, (newRegime.totalDeductions || 0) - newStdDed);
+
     container.innerHTML = `
       <div class="comparison-matrix-wrapper">
         <div class="comparison-matrix-header">
@@ -61,90 +66,97 @@
             <!-- 2. Standard Deduction -->
             <tr>
               <td>2. Standard Deduction</td>
-              <td>${formatINR(oldRegime.standardDeduction || 0)}</td>
-              <td>${formatINR(newRegime.standardDeduction || 0)}</td>
+              <td>${formatINR(oldStdDed)}</td>
+              <td>${formatINR(newStdDed)}</td>
             </tr>
 
-            <!-- 3. Total Deductions -->
+            <!-- 3. Other Deductions & Exemptions -->
             <tr>
-              <td>3. Total Deductions</td>
+              <td>3. Other Deductions & Exemptions</td>
+              <td>${formatINR(oldOtherDed)}</td>
+              <td>${formatINR(newOtherDed)}</td>
+            </tr>
+
+            <!-- 4. Total Deductions -->
+            <tr>
+              <td>4. Total Deductions</td>
               <td>${formatINR(oldRegime.totalDeductions)}</td>
               <td>${formatINR(newRegime.totalDeductions)}</td>
             </tr>
 
-            <!-- 4. Taxable Income -->
+            <!-- 5. Taxable Income -->
             <tr>
-              <td>4. Taxable Income</td>
+              <td>5. Taxable Income</td>
               <td>${formatINR(oldRegime.netTaxableIncome)}</td>
               <td>${formatINR(newRegime.netTaxableIncome)}</td>
             </tr>
 
-            <!-- 5. Tax Before Rebate -->
+            <!-- 6. Tax Before Rebate -->
             <tr>
-              <td>5. Tax Before Rebate</td>
+              <td>6. Tax Before Rebate</td>
               <td>${formatINR(oldRegime.taxBeforeRebate)}</td>
               <td>${formatINR(newRegime.taxBeforeRebate)}</td>
             </tr>
 
-            <!-- 6. Section 87A Rebate -->
+            <!-- 7. Section 87A Rebate -->
             <tr>
-              <td>6. Section 87A Rebate</td>
+              <td>7. Section 87A Rebate</td>
               <td style="color: ${oldRegime.rebate87A > 0 ? 'var(--color-emerald)' : 'inherit'};">${oldRegime.rebate87A > 0 ? `- ${formatINR(oldRegime.rebate87A)}` : '₹ 0'}</td>
               <td style="color: ${newRegime.rebate87A > 0 ? 'var(--color-emerald)' : 'inherit'};">${newRegime.rebate87A > 0 ? `- ${formatINR(newRegime.rebate87A)}` : '₹ 0'}</td>
             </tr>
 
-            <!-- 7. Tax After Rebate -->
+            <!-- 8. Tax After Rebate -->
             <tr>
-              <td>7. Tax After Rebate</td>
+              <td>8. Tax After Rebate</td>
               <td>${formatINR(oldRegime.taxAfterRebate)}</td>
               <td>${formatINR(newRegime.taxAfterRebate)}</td>
             </tr>
 
-            <!-- 8. Marginal Relief -->
+            <!-- 9. Marginal Relief -->
             <tr>
-              <td>8. Marginal Relief</td>
+              <td>9. Marginal Relief</td>
               <td style="color: ${oldRegime.marginalRelief87A > 0 ? 'var(--color-emerald)' : 'inherit'};">${oldRegime.marginalRelief87A > 0 ? `- ${formatINR(oldRegime.marginalRelief87A)}` : '₹ 0'}</td>
               <td style="color: ${newRegime.marginalRelief87A > 0 ? 'var(--color-emerald)' : 'inherit'}; font-weight: ${newRegime.marginalRelief87A > 0 ? '700' : 'normal'};">${newRegime.marginalRelief87A > 0 ? `- ${formatINR(newRegime.marginalRelief87A)}` : '₹ 0'}</td>
             </tr>
 
-            <!-- 9. Tax After Relief -->
+            <!-- 10. Tax After Relief -->
             <tr>
-              <td>9. Tax After Relief</td>
+              <td>10. Tax After Relief</td>
               <td>${formatINR(oldRegime.taxAfterRelief)}</td>
               <td>${formatINR(newRegime.taxAfterRelief)}</td>
             </tr>
 
-            <!-- 10. Health & Education Cess (4%) -->
+            <!-- 11. Health & Education Cess (4%) -->
             <tr>
-              <td>10. Health & Education Cess (4%)</td>
+              <td>11. Health & Education Cess (4%)</td>
               <td>${formatINR(oldRegime.cess)}</td>
               <td>${formatINR(newRegime.cess)}</td>
             </tr>
 
-            <!-- 11. Final Tax Payable -->
+            <!-- 12. Final Tax Payable -->
             <tr style="background: var(--color-primary-bg); font-weight: 800; font-size: 13.5px;">
-              <td style="color: var(--color-primary); font-weight: 800;">11. Final Tax Payable</td>
+              <td style="color: var(--color-primary); font-weight: 800;">12. Final Tax Payable</td>
               <td style="color: ${isOldWinning ? 'var(--color-emerald-dark)' : (oldRegime.totalTax === 0 ? 'var(--color-emerald-dark)' : 'var(--color-rose)')}; font-weight: 800;">${formatINR(oldRegime.totalTax)}</td>
               <td style="color: ${isNewWinning ? 'var(--color-emerald-dark)' : (newRegime.totalTax === 0 ? 'var(--color-emerald-dark)' : 'var(--color-rose)')}; font-weight: 800;">${formatINR(newRegime.totalTax)}</td>
             </tr>
 
-            <!-- 12. Effective Tax Rate -->
+            <!-- 13. Effective Tax Rate -->
             <tr>
-              <td>12. Effective Tax Rate</td>
+              <td>13. Effective Tax Rate</td>
               <td style="color: var(--text-body); font-weight: 600;">${oldRegime.effectiveTaxRate.toFixed(2)}%</td>
               <td style="color: var(--color-primary); font-weight: 700;">${newRegime.effectiveTaxRate.toFixed(2)}%</td>
             </tr>
 
-            <!-- 13. Annual Tax Savings -->
+            <!-- 14. Annual Tax Savings -->
             <tr>
-              <td>13. Annual Tax Savings</td>
+              <td>14. Annual Tax Savings</td>
               <td>${isOldWinning ? `${formatINR(annualSavings)}` : (isEqual ? '₹ 0' : '—')}</td>
               <td style="color: ${isNewWinning ? 'var(--color-emerald)' : 'inherit'}; font-weight: ${isNewWinning ? '700' : 'normal'};">${isNewWinning ? `${formatINR(annualSavings)}` : (isEqual ? '₹ 0' : '—')}</td>
             </tr>
 
-            <!-- 14. Monthly Tax Savings -->
+            <!-- 15. Monthly Tax Savings -->
             <tr>
-              <td>14. Monthly Tax Savings</td>
+              <td>15. Monthly Tax Savings</td>
               <td>${isOldWinning ? formatINR(monthlySavings) : (isEqual ? '₹ 0' : '—')}</td>
               <td style="color: ${isNewWinning ? 'var(--color-emerald)' : 'inherit'}; font-weight: ${isNewWinning ? '700' : 'normal'};">${isNewWinning ? formatINR(monthlySavings) : (isEqual ? '₹ 0' : '—')}</td>
             </tr>
