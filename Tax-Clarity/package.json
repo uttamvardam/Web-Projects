@@ -2,7 +2,6 @@
   "name": "taxclarity",
   "version": "1.0.0",
   "description": "TaxClarity - Privacy-First Indian Income Tax Calculator & Regime Comparator",
-  "main": "js/engine/taxEngine.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
