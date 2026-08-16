@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "description": "TaxClarity - Privacy-First Indian Income Tax Calculator & Regime Comparator",
   "scripts": {
-    "build": "echo 'Static build ready'",
-    "start": "node server.js",
     "dev": "node server.js",
     "test": "node js/tests/testSuite.js"
   },
