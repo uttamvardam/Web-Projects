@@ -73,8 +73,13 @@
     currentStep = stepNumber;
     updateView();
 
-    // Scroll to top smoothly
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Scroll to the calculator section smoothly (keeps user at calculator, not hero banner)
+    const targetAnchor = document.getElementById('calculatorSection') || document.querySelector('.calculator-utility-toolbar') || document.querySelector('.wizard-stepper');
+    if (targetAnchor) {
+      const navOffset = 20;
+      const targetPos = targetAnchor.getBoundingClientRect().top + window.pageYOffset - navOffset;
+      window.scrollTo({ top: targetPos, behavior: 'smooth' });
+    }
 
     // Notify listeners
     onStepChangeCallbacks.forEach(cb => cb(currentStep));
